@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { reducer } from './reducer';
+import { mainReducer } from './reducer';
 
-export const store = configureStore({ reducer });
+export const store = configureStore({ reducer: mainReducer });
 
 //{ reducer,
 // devTools: process.env.NODE_ENV === 'development',

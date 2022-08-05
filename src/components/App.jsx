@@ -1,54 +1,50 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PhonebookForm } from './PhonebookForm/PhonebookForm';
 import { Section } from './Section/Section';
-import { nanoid } from 'nanoid';
 import { Contacts } from './Contacts/Contacts';
 import { FindByName } from './FindByName/FindByName';
+import { addItemSelector, filterItemSelector } from 'redux/items-selector';
+import { deleteAction, filterAction } from 'redux/ItemsActions';
 
 export const App = () => {
-  const [filter, setFilter] = useState('');
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('localContacts')) || []
-  );
-
-  useEffect(() => {
-    localStorage.setItem('localContacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const handlerSubmit = contact => {
-    const isHere = contacts.some(({ name }) => name === contact.name);
-    const obj = { ...contact, id: nanoid() };
-    if (isHere) {
-      alert(`Name already in contacts`);
-      return;
-    }
-    setContacts(ps => [...ps, obj]);
-  };
+  const dispatch = useDispatch();
+  const contacts = useSelector(addItemSelector);
+  const filteritem = useSelector(filterItemSelector);
 
   const handleChange = event => {
     const { value } = event.target;
-    setFilter(value);
+    dispatch(filterAction(value));
   };
 
   const handleFilters = () => {
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+      contact.name.toLowerCase().includes(filteritem.toLowerCase())
     );
   };
 
   const handleDelete = id => {
-    setContacts(ps => ps.filter(el => el.id !== id));
+    dispatch(deleteAction(id));
   };
 
   return (
     <>
       <Section title="phonebook">
-        <PhonebookForm onSubmit={handlerSubmit} />
+        <PhonebookForm />
       </Section>
       <Section title="Contacts">
-        <FindByName value={filter} onChange={handleChange} />
+        <FindByName value={filteritem} onChange={handleChange} />
         <Contacts contact={handleFilters()} onDelete={handleDelete} />
       </Section>
     </>
   );
 };
+
+// const [filter, setFilter] = useState('');
+// const [contacts, setContacts] = useState(
+//   JSON.parse(localStorage.getItem('localContacts')) || []
+// );
+
+// useEffect(() => {
+//   localStorage.setItem('localContacts', JSON.stringify(contacts));
+// }, [contacts]);
