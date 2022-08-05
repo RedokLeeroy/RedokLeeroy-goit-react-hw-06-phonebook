@@ -1,4 +1,3 @@
-// import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PhonebookForm } from './PhonebookForm/PhonebookForm';
 import { Section } from './Section/Section';
@@ -39,12 +38,3 @@ export const App = () => {
     </>
   );
 };
-
-// const [filter, setFilter] = useState('');
-// const [contacts, setContacts] = useState(
-//   JSON.parse(localStorage.getItem('localContacts')) || []
-// );
-
-// useEffect(() => {
-//   localStorage.setItem('localContacts', JSON.stringify(contacts));
-// }, [contacts]);
